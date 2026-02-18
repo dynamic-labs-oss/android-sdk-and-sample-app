@@ -22,7 +22,8 @@ fun HomeScreen(
     onNavigateToLogin: () -> Unit,
     onNavigateToWalletDetails: (String) -> Unit,
     onNavigateToMfaDevices: () -> Unit,
-    onNavigateToPasskeys: () -> Unit
+    onNavigateToPasskeys: () -> Unit,
+    onNavigateToProjectSettings: () -> Unit
 ) {
     val viewModel: HomeScreenViewModel = viewModel()
     val wallets by viewModel.wallets.collectAsState()
@@ -172,6 +173,16 @@ fun HomeScreen(
             icon = Icons.Default.Key,
             title = "Passkeys",
             onClick = onNavigateToPasskeys,
+            modifier = Modifier.padding(horizontal = 20.dp)
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // 5) Project Settings Button
+        NavigationButton(
+            icon = Icons.Default.Settings,
+            title = "Project Settings",
+            onClick = onNavigateToProjectSettings,
             modifier = Modifier.padding(horizontal = 20.dp)
         )
 
