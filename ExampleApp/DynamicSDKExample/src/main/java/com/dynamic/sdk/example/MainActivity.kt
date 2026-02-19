@@ -53,6 +53,7 @@ class MainActivity : ComponentActivity() {
             appName = "Dynamic Android Demo",
             redirectUrl = "flutterdemo://",
             appOrigin = "https://demo.dynamic.xyz",
+            apiBaseUrl = "https://app.dynamicauth.com/api/v0",
             logLevel = LoggerLevel.DEBUG,
             evmNetworks = listOf(b3SepoliaNetwork)
         )

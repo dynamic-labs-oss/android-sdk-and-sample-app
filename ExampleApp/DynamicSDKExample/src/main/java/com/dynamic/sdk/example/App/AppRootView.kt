@@ -46,6 +46,9 @@ fun AppRootView() {
                 },
                 onNavigateToPasskeys = {
                     navController.navigate(Route.Passkeys.route)
+                },
+                onNavigateToProjectSettings = {
+                    navController.navigate(Route.ProjectSettings.route)
                 }
             )
         }
@@ -83,6 +86,13 @@ fun AppRootView() {
         // Passkeys Screen
         composable(Route.Passkeys.route) {
             PasskeysScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        // Project Settings Screen
+        composable(Route.ProjectSettings.route) {
+            ProjectSettingsScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }
