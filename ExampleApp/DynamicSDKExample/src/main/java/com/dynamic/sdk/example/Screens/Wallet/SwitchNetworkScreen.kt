@@ -28,6 +28,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.intOrNull
 
 data class NetworkItem(
     val name: String,
@@ -252,7 +255,6 @@ class SwitchNetworkViewModel(private val wallet: BaseWallet) : ViewModel() {
                     networkList.addAll(sdk.networks.evm.map { network ->
                         val chainId = when (val v = network.chainId) {
                             is Int -> v
-                            is Long -> v.toIntOrNull()
                             is String -> v.toIntOrNull()
                             else -> null
                         }

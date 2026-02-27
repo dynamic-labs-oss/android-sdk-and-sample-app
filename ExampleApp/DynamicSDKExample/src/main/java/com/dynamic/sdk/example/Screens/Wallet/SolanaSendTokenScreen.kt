@@ -40,6 +40,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import com.solanaweb3.*
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
 import org.sol4k.PublicKey
 import java.math.BigDecimal
@@ -602,8 +604,8 @@ class SolanaSendTokenViewModel(private val wallet: BaseWallet) : ViewModel() {
 
             try {
                 val solanaNetworks = sdk.networks.solana
-                val networkIds = solanaNetworks.mapNotNull { network ->
-                     network.chainId.jsonPrimitive.content.toInt()
+                val networkIds = solanaNetworks.map { network ->
+                     network.chainId.toString().toInt()
                 }
 
                 val response = sdk.wallets.getMultichainBalances(

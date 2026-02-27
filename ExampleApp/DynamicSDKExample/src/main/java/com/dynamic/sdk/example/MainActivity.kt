@@ -58,7 +58,6 @@ class MainActivity : ComponentActivity() {
             evmNetworks = listOf(b3SepoliaNetwork)
         )
         DynamicSDK.initialize(props, applicationContext, this)
-
         setContent {
             DynamicSDKExampleTheme {
                 Surface(
