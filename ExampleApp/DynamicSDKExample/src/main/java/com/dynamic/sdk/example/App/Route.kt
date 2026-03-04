@@ -10,6 +10,7 @@ sealed class Route(val route: String) {
     object Passkeys : Route("passkeys")
     object Delegation : Route("delegation")
     object ProjectSettings : Route("project_settings")
+    object CreatePasswordWallet : Route("create_password_wallet")
 
     // Wallet routes with address parameter
     object WalletDetails : Route("wallet_details/{address}") {
@@ -40,6 +41,11 @@ sealed class Route(val route: String) {
     }
     object EvmSendErc20 : Route("evm_send_erc20/{address}") {
         fun createRoute(address: String) = "evm_send_erc20/$address"
+    }
+
+    // Wallet password route
+    object WalletPassword : Route("wallet_password/{address}") {
+        fun createRoute(address: String) = "wallet_password/$address"
     }
 
     // Solana routes

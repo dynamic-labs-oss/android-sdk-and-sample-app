@@ -349,7 +349,7 @@ class DelegationViewModel : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                sdk.wallets.initDelegationProcess()
+                sdk.wallets.waas.delegation.initDelegationProcess()
                 _feedbackMessage.value = "Delegation modal opened"
             } catch (e: Exception) {
                 _feedbackMessage.value = "Error: ${e.message}"
@@ -363,7 +363,7 @@ class DelegationViewModel : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val shouldPrompt = sdk.wallets.shouldPromptWalletDelegation()
+                val shouldPrompt = sdk.wallets.waas.delegation.shouldPromptWalletDelegation()
                 _feedbackMessage.value = "Should prompt: $shouldPrompt"
             } catch (e: Exception) {
                 _feedbackMessage.value = "Error: ${e.message}"
@@ -377,7 +377,7 @@ class DelegationViewModel : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val statuses = sdk.wallets.getWalletsDelegatedStatus()
+                val statuses = sdk.wallets.waas.delegation.getWalletsDelegatedStatus()
                 _feedbackMessage.value = "Found ${statuses.size} wallets"
                 loadDelegationState()
             } catch (e: Exception) {
@@ -392,7 +392,7 @@ class DelegationViewModel : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                sdk.wallets.delegateKeyShares()
+                sdk.wallets.waas.delegation.delegateKeyShares()
                 _feedbackMessage.value = "Delegation started for all wallets"
             } catch (e: Exception) {
                 _feedbackMessage.value = "Error: ${e.message}"
@@ -406,7 +406,7 @@ class DelegationViewModel : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                sdk.wallets.revokeDelegation(
+                sdk.wallets.waas.delegation.revokeDelegation(
                     wallets = listOf(
                         DelegationWalletIdentifier(wallet.chain, wallet.address)
                     )
@@ -425,7 +425,7 @@ class DelegationViewModel : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                sdk.wallets.denyWalletDelegation(wallet.id)
+                sdk.wallets.waas.delegation.denyWalletDelegation(wallet.id)
                 _feedbackMessage.value = "Denied delegation for ${wallet.address}"
                 loadDelegationState()
             } catch (e: Exception) {
@@ -440,7 +440,7 @@ class DelegationViewModel : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                sdk.wallets.dismissDelegationPrompt(walletId)
+                sdk.wallets.waas.delegation.dismissDelegationPrompt(walletId)
                 _feedbackMessage.value = "Dismissed prompt for wallet"
             } catch (e: Exception) {
                 _feedbackMessage.value = "Error: ${e.message}"
@@ -454,7 +454,7 @@ class DelegationViewModel : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                sdk.wallets.dismissDelegationPrompt()
+                sdk.wallets.waas.delegation.dismissDelegationPrompt()
                 _feedbackMessage.value = "Dismissed all prompts"
             } catch (e: Exception) {
                 _feedbackMessage.value = "Error: ${e.message}"
@@ -468,7 +468,7 @@ class DelegationViewModel : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                sdk.wallets.clearDelegationSessionState()
+                sdk.wallets.waas.delegation.clearDelegationSessionState()
                 _feedbackMessage.value = "Session state cleared"
             } catch (e: Exception) {
                 _feedbackMessage.value = "Error: ${e.message}"

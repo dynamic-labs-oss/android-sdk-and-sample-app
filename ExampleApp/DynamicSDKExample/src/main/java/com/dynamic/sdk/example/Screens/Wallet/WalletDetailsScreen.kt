@@ -56,7 +56,8 @@ fun WalletDetailsScreen(
     onNavigateToEvmWriteContract: () -> Unit,
     onNavigateToEvmSendErc20: () -> Unit,
     onNavigateToSolanaSendTransaction: () -> Unit,
-    onNavigateToSolanaSendToken: () -> Unit
+    onNavigateToSolanaSendToken: () -> Unit,
+    onNavigateToWalletPassword: () -> Unit = {}
 ) {
     val viewModel: WalletDetailsViewModel = viewModel(
         factory = WalletDetailsViewModelFactory(wallet)
@@ -173,6 +174,28 @@ fun WalletDetailsScreen(
 
         Spacer(modifier = Modifier.height(12.dp))
 
+        // Copy Wallet Details Button
+        SecondaryButton(
+            icon = Icons.Default.ContentCopy,
+            title = "Copy Wallet Details",
+            onClick = {
+                val details = buildString {
+                    wallet.id?.takeIf { it.isNotEmpty() }?.let { appendLine("ID: $it") }
+                    appendLine("Address: ${wallet.address}")
+                    appendLine("Chain: ${wallet.chain}")
+                    wallet.publicKey?.takeIf { it.isNotEmpty() }?.let { appendLine("Public Key: $it") }
+                    wallet.walletName?.takeIf { it.isNotEmpty() }?.let { appendLine("Wallet Name: $it") }
+                    wallet.walletProvider?.takeIf { it.isNotEmpty() }?.let { appendLine("Wallet Provider: $it") }
+                }.trimEnd()
+                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                clipboard.setPrimaryClip(ClipData.newPlainText("wallet_details", details))
+                showCopiedSnackbar = true
+            },
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
         // Sign Message Button
         SecondaryButton(
             icon = Icons.Default.Edit,
@@ -229,6 +252,17 @@ fun WalletDetailsScreen(
             icon = Icons.Default.BarChart,
             title = "Custom Token Balances",
             onClick = onNavigateToCustomBalance,
+            showChevron = true,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Wallet Password Button
+        SecondaryButton(
+            icon = Icons.Default.Lock,
+            title = "Wallet Password",
+            onClick = onNavigateToWalletPassword,
             showChevron = true,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
@@ -316,7 +350,31 @@ fun WalletDetailCard(
                 }
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            // Wallet ID
+            wallet.id?.let { walletId ->
+                if (walletId.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Text(
+                        text = "Wallet ID",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = walletId,
+                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = FontFamily.Monospace,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 2
+                    )
+                    Divider(
+                        modifier = Modifier.padding(vertical = 16.dp),
+                        color = MaterialTheme.colorScheme.outline
+                    )
+                }
+            } ?: run {
+                Spacer(modifier = Modifier.height(20.dp))
+            }
 
             Text(
                 text = "Address",
@@ -746,7 +804,7 @@ class WalletDetailsViewModel(private val wallet: BaseWallet) : ViewModel() {
             _isDelegationLoading.value = true
             try {
                 val chainEnum = if (wallet.chain.uppercase() == "EVM") ChainEnum.EVM else ChainEnum.SOL
-                sdk.wallets.delegateKeyShares(
+                sdk.wallets.waas.delegation.delegateKeyShares(
                     wallets = listOf(
                         DelegationWalletIdentifier(
                             chainName = chainEnum.toString(),
@@ -767,7 +825,7 @@ class WalletDetailsViewModel(private val wallet: BaseWallet) : ViewModel() {
             _isDelegationLoading.value = true
             try {
                 val chainEnum = if (wallet.chain.uppercase() == "EVM") ChainEnum.EVM else ChainEnum.SOL
-                sdk.wallets.revokeDelegation(
+                sdk.wallets.waas.delegation.revokeDelegation(
                     wallets = listOf(
                         DelegationWalletIdentifier(
                             chainName = chainEnum.toString(),

@@ -49,6 +49,9 @@ fun AppRootView() {
                 },
                 onNavigateToProjectSettings = {
                     navController.navigate(Route.ProjectSettings.route)
+                },
+                onNavigateToCreatePasswordWallet = {
+                    navController.navigate(Route.CreatePasswordWallet.route)
                 }
             )
         }
@@ -93,6 +96,13 @@ fun AppRootView() {
         // Project Settings Screen
         composable(Route.ProjectSettings.route) {
             ProjectSettingsScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        // Create Password Wallet Screen
+        composable(Route.CreatePasswordWallet.route) {
+            CreatePasswordWalletScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }
@@ -145,6 +155,9 @@ fun AppRootView() {
                     },
                     onNavigateToSolanaSendToken = {
                         navController.navigate(Route.SolanaSendToken.createRoute(address))
+                    },
+                    onNavigateToWalletPassword = {
+                        navController.navigate(Route.WalletPassword.createRoute(address))
                     }
                 )
             }
@@ -289,6 +302,22 @@ fun AppRootView() {
 
             wallet?.let { w ->
                 SolanaSendTransactionScreen(
+                    onNavigateBack = { navController.popBackStack() },
+                    wallet = w
+                )
+            }
+        }
+
+        // Wallet Password Screen
+        composable(
+            route = Route.WalletPassword.route,
+            arguments = listOf(navArgument("address") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val address = backStackEntry.arguments?.getString("address") ?: return@composable
+            val wallet = remember(address) { findWalletByAddress(address) }
+
+            wallet?.let { w ->
+                WalletPasswordScreen(
                     onNavigateBack = { navController.popBackStack() },
                     wallet = w
                 )

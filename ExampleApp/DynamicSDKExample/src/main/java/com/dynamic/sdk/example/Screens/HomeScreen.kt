@@ -23,7 +23,8 @@ fun HomeScreen(
     onNavigateToWalletDetails: (String) -> Unit,
     onNavigateToMfaDevices: () -> Unit,
     onNavigateToPasskeys: () -> Unit,
-    onNavigateToProjectSettings: () -> Unit
+    onNavigateToProjectSettings: () -> Unit,
+    onNavigateToCreatePasswordWallet: () -> Unit = {}
 ) {
     val viewModel: HomeScreenViewModel = viewModel()
     val wallets by viewModel.wallets.collectAsState()
@@ -136,6 +137,15 @@ fun HomeScreen(
                 )
             }
         }
+
+        // Create Password Wallet button
+        Spacer(modifier = Modifier.height(12.dp))
+        NavigationButton(
+            icon = Icons.Default.Lock,
+            title = "Create Password Wallet",
+            onClick = onNavigateToCreatePasswordWallet,
+            modifier = Modifier.padding(horizontal = 20.dp)
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
 
