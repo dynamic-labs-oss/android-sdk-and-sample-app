@@ -55,4 +55,15 @@ sealed class Route(val route: String) {
     object SolanaSendToken : Route("solana_send_token/{address}") {
         fun createRoute(address: String) = "solana_send_token/$address"
     }
+
+    // SUI routes
+    object SuiSignMessage : Route("sui_sign_message/{address}") {
+        fun createRoute(address: String) = "sui_sign_message/$address"
+    }
+    object SuiSignTransaction : Route("sui_sign_transaction/{address}") {
+        fun createRoute(address: String) = "sui_sign_transaction/$address"
+    }
+    object SuiSendTransaction : Route("sui_send_transaction/{address}") {
+        fun createRoute(address: String) = "sui_send_transaction/$address"
+    }
 }
