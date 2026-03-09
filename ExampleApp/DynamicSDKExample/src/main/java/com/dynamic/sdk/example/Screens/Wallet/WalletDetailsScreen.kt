@@ -57,7 +57,10 @@ fun WalletDetailsScreen(
     onNavigateToEvmSendErc20: () -> Unit,
     onNavigateToSolanaSendTransaction: () -> Unit,
     onNavigateToSolanaSendToken: () -> Unit,
-    onNavigateToWalletPassword: () -> Unit = {}
+    onNavigateToWalletPassword: () -> Unit = {},
+    onNavigateToSuiSignMessage: () -> Unit = {},
+    onNavigateToSuiSignTransaction: () -> Unit = {},
+    onNavigateToSuiSendTransaction: () -> Unit = {}
 ) {
     val viewModel: WalletDetailsViewModel = viewModel(
         factory = WalletDetailsViewModelFactory(wallet)
@@ -284,6 +287,14 @@ fun WalletDetailsScreen(
             SolanaActionsView(
                 onSendTransaction = onNavigateToSolanaSendTransaction,
                 onSendToken = onNavigateToSolanaSendToken
+            )
+        }
+
+        if (wallet.chain.uppercase() == "SUI") {
+            SuiActionsView(
+                onSignMessage = onNavigateToSuiSignMessage,
+                onSignTransaction = onNavigateToSuiSignTransaction,
+                onSendTransaction = onNavigateToSuiSendTransaction
             )
         }
 
@@ -569,6 +580,49 @@ fun SolanaActionsView(
             icon = Icons.Default.SwapHoriz,
             title = "Send SPL Token",
             onClick = onSendToken,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+        )
+    }
+}
+
+@Composable
+fun SuiActionsView(
+    onSignMessage: () -> Unit,
+    onSignTransaction: () -> Unit,
+    onSendTransaction: () -> Unit
+) {
+    Column(
+        modifier = Modifier.padding(vertical = 8.dp)
+    ) {
+        Text(
+            text = "SUI Actions",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+        )
+
+        // Sign Message
+        ActionButton(
+            icon = Icons.Default.Edit,
+            title = "Sign Message",
+            onClick = onSignMessage,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+        )
+
+        // Sign Transaction
+        ActionButton(
+            icon = Icons.Default.Create,
+            title = "Sign Transaction",
+            onClick = onSignTransaction,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+        )
+
+        // Send Transaction
+        ActionButton(
+            icon = Icons.Default.Send,
+            title = "Send Transaction",
+            onClick = onSendTransaction,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
         )
     }

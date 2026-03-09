@@ -158,6 +158,15 @@ fun AppRootView() {
                     },
                     onNavigateToWalletPassword = {
                         navController.navigate(Route.WalletPassword.createRoute(address))
+                    },
+                    onNavigateToSuiSignMessage = {
+                        navController.navigate(Route.SuiSignMessage.createRoute(address))
+                    },
+                    onNavigateToSuiSignTransaction = {
+                        navController.navigate(Route.SuiSignTransaction.createRoute(address))
+                    },
+                    onNavigateToSuiSendTransaction = {
+                        navController.navigate(Route.SuiSendTransaction.createRoute(address))
                     }
                 )
             }
@@ -334,6 +343,54 @@ fun AppRootView() {
 
             wallet?.let { w ->
                 SolanaSendTokenScreen(
+                    onNavigateBack = { navController.popBackStack() },
+                    wallet = w
+                )
+            }
+        }
+
+        // SUI Sign Message Screen
+        composable(
+            route = Route.SuiSignMessage.route,
+            arguments = listOf(navArgument("address") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val address = backStackEntry.arguments?.getString("address") ?: return@composable
+            val wallet = remember(address) { findWalletByAddress(address) }
+
+            wallet?.let { w ->
+                SuiSignMessageScreen(
+                    onNavigateBack = { navController.popBackStack() },
+                    wallet = w
+                )
+            }
+        }
+
+        // SUI Sign Transaction Screen
+        composable(
+            route = Route.SuiSignTransaction.route,
+            arguments = listOf(navArgument("address") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val address = backStackEntry.arguments?.getString("address") ?: return@composable
+            val wallet = remember(address) { findWalletByAddress(address) }
+
+            wallet?.let { w ->
+                SuiSignTransactionScreen(
+                    onNavigateBack = { navController.popBackStack() },
+                    wallet = w
+                )
+            }
+        }
+
+        // SUI Send Transaction Screen
+        composable(
+            route = Route.SuiSendTransaction.route,
+            arguments = listOf(navArgument("address") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val address = backStackEntry.arguments?.getString("address") ?: return@composable
+            val wallet = remember(address) { findWalletByAddress(address) }
+
+            wallet?.let { w ->
+                SuiSendTransactionScreen(
                     onNavigateBack = { navController.popBackStack() },
                     wallet = w
                 )

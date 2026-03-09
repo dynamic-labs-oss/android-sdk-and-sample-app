@@ -12,6 +12,7 @@ import com.dynamic.sdk.android.DynamicSDK
 import com.dynamic.sdk.android.Module.GenericNetwork
 import com.dynamic.sdk.android.Module.NativeCurrency
 import com.dynamic.sdk.android.UI.DynamicUI
+import com.dynamic.sdk.android.core.ClientDebugProps
 import com.dynamic.sdk.android.core.ClientProps
 import com.dynamic.sdk.android.core.LoggerLevel
 import com.dynamic.sdk.example.App.AppRootView
@@ -51,7 +52,7 @@ class MainActivity : ComponentActivity() {
             environmentId = "3e219b76-dcf1-40ab-aad6-652c4dfab4cc",
             appLogoUrl = "https://demo.dynamic.xyz/favicon-32x32.png",
             appName = "Dynamic Android Demo",
-            redirectUrl = "flutterdemo://",
+            redirectUrl = "dynamicandroiddemo://",
             appOrigin = "https://demo.dynamic.xyz",
             apiBaseUrl = "https://app.dynamicauth.com/api/v0",
             logLevel = LoggerLevel.DEBUG,
