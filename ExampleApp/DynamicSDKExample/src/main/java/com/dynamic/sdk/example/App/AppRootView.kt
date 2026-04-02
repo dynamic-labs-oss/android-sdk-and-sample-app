@@ -44,6 +44,12 @@ fun AppRootView() {
                 onNavigateToMfaDevices = {
                     navController.navigate(Route.MfaDevices.route)
                 },
+                onNavigateToStepUpAuth = {
+                    navController.navigate(Route.StepUpAuth.route)
+                },
+                onNavigateToTrustedDevices = {
+                    navController.navigate(Route.TrustedDevices.route)
+                },
                 onNavigateToPasskeys = {
                     navController.navigate(Route.Passkeys.route)
                 },
@@ -52,6 +58,12 @@ fun AppRootView() {
                 },
                 onNavigateToCreatePasswordWallet = {
                     navController.navigate(Route.CreatePasswordWallet.route)
+                },
+                onNavigateToDelegation = {
+                    navController.navigate(Route.Delegation.route)
+                },
+                onNavigateToWalletConnect = {
+                    navController.navigate(Route.WalletConnect.route)
                 }
             )
         }
@@ -110,6 +122,27 @@ fun AppRootView() {
         // Delegation Screen
         composable(Route.Delegation.route) {
             DelegationScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        // Step-Up Auth Screen
+        composable(Route.StepUpAuth.route) {
+            StepUpAuthScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        // Trusted Devices Screen
+        composable(Route.TrustedDevices.route) {
+            TrustedDevicesScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        // WalletConnect Screen
+        composable(Route.WalletConnect.route) {
+            com.dynamic.sdk.example.Screens.WalletConnect.WalletConnectScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }

@@ -36,7 +36,7 @@ dependencyResolutionManagement {
     val jfrogToken: String? = System.getenv("JFROG_ACCESS_TOKEN")
     val hasJfrogCredentials = !jfrogUsername.isNullOrBlank() && !jfrogToken.isNullOrBlank()
 
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
         if (hasJfrogCredentials) {
             maven {

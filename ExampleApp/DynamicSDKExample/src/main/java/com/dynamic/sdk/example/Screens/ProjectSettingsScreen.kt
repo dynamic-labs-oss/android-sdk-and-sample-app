@@ -220,10 +220,6 @@ private fun SettingsContent(settings: ProjectSettings) {
                 SettingsRow(label = "Email Sign-In Provider", value = emailSignIn.signInProvider?.name ?: "N/A")
             }
 
-            sdk.walletConnect?.let { walletConnect ->
-                SettingsRow(label = "WalletConnect v2", value = walletConnect.v2Enabled?.toString() ?: "N/A")
-            }
-
             sdk.embeddedWallets?.let { ew ->
                 SettingsRow(label = "Auto Create EW", value = ew.automaticEmbeddedWalletCreation?.toString() ?: "N/A")
                 SettingsRow(label = "Email Recovery", value = ew.emailRecoveryEnabled?.toString() ?: "N/A")
