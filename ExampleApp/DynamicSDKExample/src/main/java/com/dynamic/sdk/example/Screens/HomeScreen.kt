@@ -22,9 +22,13 @@ fun HomeScreen(
     onNavigateToLogin: () -> Unit,
     onNavigateToWalletDetails: (String) -> Unit,
     onNavigateToMfaDevices: () -> Unit,
+    onNavigateToStepUpAuth: () -> Unit,
+    onNavigateToTrustedDevices: () -> Unit,
     onNavigateToPasskeys: () -> Unit,
     onNavigateToProjectSettings: () -> Unit,
-    onNavigateToCreatePasswordWallet: () -> Unit = {}
+    onNavigateToCreatePasswordWallet: () -> Unit = {},
+    onNavigateToDelegation: () -> Unit = {},
+    onNavigateToWalletConnect: () -> Unit = {}
 ) {
     val viewModel: HomeScreenViewModel = viewModel()
     val wallets by viewModel.wallets.collectAsState()
@@ -178,6 +182,26 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(12.dp))
 
+        // Step-Up Auth Button
+        NavigationButton(
+            icon = Icons.Default.Security,
+            title = "Step-Up Auth",
+            onClick = onNavigateToStepUpAuth,
+            modifier = Modifier.padding(horizontal = 20.dp)
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Trusted Devices Button
+        NavigationButton(
+            icon = Icons.Default.PhoneAndroid,
+            title = "Trusted Devices",
+            onClick = onNavigateToTrustedDevices,
+            modifier = Modifier.padding(horizontal = 20.dp)
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
         // 4) Passkeys Button
         NavigationButton(
             icon = Icons.Default.Key,
@@ -193,6 +217,26 @@ fun HomeScreen(
             icon = Icons.Default.Settings,
             title = "Project Settings",
             onClick = onNavigateToProjectSettings,
+            modifier = Modifier.padding(horizontal = 20.dp)
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // 6) Delegation Button
+        NavigationButton(
+            icon = Icons.Default.Share,
+            title = "Delegation",
+            onClick = onNavigateToDelegation,
+            modifier = Modifier.padding(horizontal = 20.dp)
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // 7) WalletConnect Button
+        NavigationButton(
+            icon = Icons.Default.Link,
+            title = "WalletConnect",
+            onClick = onNavigateToWalletConnect,
             modifier = Modifier.padding(horizontal = 20.dp)
         )
 

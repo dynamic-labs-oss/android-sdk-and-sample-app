@@ -9,9 +9,10 @@ sealed class Route(val route: String) {
     object MfaRecoveryCodes : Route("mfa_recovery_codes")
     object Passkeys : Route("passkeys")
     object Delegation : Route("delegation")
+    object StepUpAuth : Route("step_up_auth")
+    object TrustedDevices : Route("trusted_devices")
     object ProjectSettings : Route("project_settings")
     object CreatePasswordWallet : Route("create_password_wallet")
-
     // Wallet routes with address parameter
     object WalletDetails : Route("wallet_details/{address}") {
         fun createRoute(address: String) = "wallet_details/$address"
@@ -66,4 +67,5 @@ sealed class Route(val route: String) {
     object SuiSendTransaction : Route("sui_send_transaction/{address}") {
         fun createRoute(address: String) = "sui_send_transaction/$address"
     }
+    object WalletConnect : Route("wallet_connect")
 }

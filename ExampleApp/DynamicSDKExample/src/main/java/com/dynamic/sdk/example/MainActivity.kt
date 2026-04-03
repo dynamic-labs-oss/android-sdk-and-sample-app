@@ -12,10 +12,10 @@ import com.dynamic.sdk.android.DynamicSDK
 import com.dynamic.sdk.android.Module.GenericNetwork
 import com.dynamic.sdk.android.Module.NativeCurrency
 import com.dynamic.sdk.android.UI.DynamicUI
-import com.dynamic.sdk.android.core.ClientDebugProps
 import com.dynamic.sdk.android.core.ClientProps
 import com.dynamic.sdk.android.core.LoggerLevel
 import com.dynamic.sdk.example.App.AppRootView
+import com.dynamic.sdk.example.Screens.WalletConnect.WcGlobalListener
 import com.dynamic.sdk.example.ui.theme.DynamicSDKExampleTheme
 
 class MainActivity : ComponentActivity() {
@@ -56,21 +56,26 @@ class MainActivity : ComponentActivity() {
             appOrigin = "https://demo.dynamic.xyz",
             apiBaseUrl = "https://app.dynamicauth.com/api/v0",
             logLevel = LoggerLevel.DEBUG,
-            evmNetworks = listOf(b3SepoliaNetwork)
+            evmNetworks = listOf(b3SepoliaNetwork),
+            reownProjectId = "7569c63c696a4e8aeb3217c1b1332bd7"
         )
         DynamicSDK.initialize(props, applicationContext, this)
+
+
         setContent {
             DynamicSDKExampleTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        // Main app content
-                        AppRootView()
+                    WcGlobalListener {
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            // Main app content
+                            AppRootView()
 
-                        // Dynamic SDK WebView overlay (shows when auth/profile is opened)
-                        DynamicUI()
+                            // Dynamic SDK WebView overlay (shows when auth/profile is opened)
+                            DynamicUI()
+                        }
                     }
                 }
             }

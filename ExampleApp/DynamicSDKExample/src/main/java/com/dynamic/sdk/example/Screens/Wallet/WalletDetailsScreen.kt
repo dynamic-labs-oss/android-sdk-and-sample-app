@@ -781,21 +781,49 @@ class WalletDetailsViewModel(private val wallet: BaseWallet) : ViewModel() {
         // Observe delegation changes
         viewModelScope.launch {
             sdk.wallets.delegatedAccessChanges.collect {
-                updateDelegationStatus()
+                updateDelegationStatusFromLocal()
             }
         }
     }
 
-    private fun updateDelegationStatus() {
+    private fun updateDelegationStatusFromLocal() {
         wallet.id?.let { id ->
-            _delegationStatus.value = sdk.wallets.getDelegationStatusForWallet(id)
+            val existingStatus = sdk.wallets.getDelegationStatusForWallet(id)
+            if (existingStatus != null) {
+                _delegationStatus.value = existingStatus
+            }
+        }
+    }
+
+    private fun fetchDelegationStatus() {
+        viewModelScope.launch {
+            try {
+                val statuses = sdk.wallets.waas.delegation.getWalletsDelegatedStatus()
+                wallet.id?.let { id ->
+                    val status = statuses.find { it.id == id }
+                    if (status != null) {
+                        _delegationStatus.value = status
+                    } else if (statuses.isNotEmpty()) {
+                        // Delegation is enabled but this wallet has no status yet — show as PENDING
+                        _delegationStatus.value = WalletDelegatedStatus(
+                            id = id,
+                            address = wallet.address,
+                            chain = wallet.chain,
+                            status = DelegationStatus.PENDING
+                        )
+                    }
+                }
+            } catch (_: Exception) {
+                // Delegation not available for this wallet/project
+            }
         }
     }
 
     fun refresh() {
         loadBalance()
         loadNetwork()
-        updateDelegationStatus()
+        updateDelegationStatusFromLocal()
+        fetchDelegationStatus()
     }
 
     private fun loadBalance() {
