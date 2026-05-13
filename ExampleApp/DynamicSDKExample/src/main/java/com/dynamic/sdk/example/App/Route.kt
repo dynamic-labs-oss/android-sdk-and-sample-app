@@ -67,5 +67,27 @@ sealed class Route(val route: String) {
     object SuiSendTransaction : Route("sui_send_transaction/{address}") {
         fun createRoute(address: String) = "sui_send_transaction/$address"
     }
+    // TON routes
+    object TonSignMessage : Route("ton_sign_message/{address}") {
+        fun createRoute(address: String) = "ton_sign_message/$address"
+    }
+    object TonSendTon : Route("ton_send_ton/{address}") {
+        fun createRoute(address: String) = "ton_send_ton/$address"
+    }
+    object TonSendJetton : Route("ton_send_jetton/{address}") {
+        fun createRoute(address: String) = "ton_send_jetton/$address"
+    }
+
+    // Bitcoin routes
+    object BtcSignMessage : Route("btc_sign_message/{address}") {
+        fun createRoute(address: String) = "btc_sign_message/$address"
+    }
+    object BtcSendBitcoin : Route("btc_send_bitcoin/{address}") {
+        fun createRoute(address: String) = "btc_send_bitcoin/$address"
+    }
+    object BtcSignPsbt : Route("btc_sign_psbt/{address}") {
+        fun createRoute(address: String) = "btc_sign_psbt/$address"
+    }
+
     object WalletConnect : Route("wallet_connect")
 }

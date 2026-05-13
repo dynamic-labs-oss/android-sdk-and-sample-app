@@ -60,7 +60,13 @@ fun WalletDetailsScreen(
     onNavigateToWalletPassword: () -> Unit = {},
     onNavigateToSuiSignMessage: () -> Unit = {},
     onNavigateToSuiSignTransaction: () -> Unit = {},
-    onNavigateToSuiSendTransaction: () -> Unit = {}
+    onNavigateToSuiSendTransaction: () -> Unit = {},
+    onNavigateToTonSignMessage: () -> Unit = {},
+    onNavigateToTonSendTon: () -> Unit = {},
+    onNavigateToTonSendJetton: () -> Unit = {},
+    onNavigateToBtcSignMessage: () -> Unit = {},
+    onNavigateToBtcSendBitcoin: () -> Unit = {},
+    onNavigateToBtcSignPsbt: () -> Unit = {}
 ) {
     val viewModel: WalletDetailsViewModel = viewModel(
         factory = WalletDetailsViewModelFactory(wallet)
@@ -295,6 +301,22 @@ fun WalletDetailsScreen(
                 onSignMessage = onNavigateToSuiSignMessage,
                 onSignTransaction = onNavigateToSuiSignTransaction,
                 onSendTransaction = onNavigateToSuiSendTransaction
+            )
+        }
+
+        if (wallet.chain.uppercase() == "TON") {
+            TonActionsView(
+                onSignMessage = onNavigateToTonSignMessage,
+                onSendTon = onNavigateToTonSendTon,
+                onSendJetton = onNavigateToTonSendJetton
+            )
+        }
+
+        if (wallet.chain.uppercase() == "BTC") {
+            BitcoinActionsView(
+                onSignMessage = onNavigateToBtcSignMessage,
+                onSendBitcoin = onNavigateToBtcSendBitcoin,
+                onSignPsbt = onNavigateToBtcSignPsbt
             )
         }
 
@@ -623,6 +645,86 @@ fun SuiActionsView(
             icon = Icons.Default.Send,
             title = "Send Transaction",
             onClick = onSendTransaction,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+        )
+    }
+}
+
+@Composable
+fun TonActionsView(
+    onSignMessage: () -> Unit,
+    onSendTon: () -> Unit,
+    onSendJetton: () -> Unit
+) {
+    Column(
+        modifier = Modifier.padding(vertical = 8.dp)
+    ) {
+        Text(
+            text = "TON Actions",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+        )
+
+        ActionButton(
+            icon = Icons.Default.Edit,
+            title = "Sign Message",
+            onClick = onSignMessage,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+        )
+
+        ActionButton(
+            icon = Icons.Default.Send,
+            title = "Send TON",
+            onClick = onSendTon,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+        )
+
+        ActionButton(
+            icon = Icons.Default.SwapHoriz,
+            title = "Send Jetton",
+            onClick = onSendJetton,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+        )
+    }
+}
+
+@Composable
+fun BitcoinActionsView(
+    onSignMessage: () -> Unit,
+    onSendBitcoin: () -> Unit,
+    onSignPsbt: () -> Unit
+) {
+    Column(
+        modifier = Modifier.padding(vertical = 8.dp)
+    ) {
+        Text(
+            text = "Bitcoin Actions",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+        )
+
+        ActionButton(
+            icon = Icons.Default.Edit,
+            title = "Sign Message",
+            onClick = onSignMessage,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+        )
+
+        ActionButton(
+            icon = Icons.Default.Send,
+            title = "Send Bitcoin",
+            onClick = onSendBitcoin,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+        )
+
+        ActionButton(
+            icon = Icons.Default.Create,
+            title = "Sign PSBT",
+            onClick = onSignPsbt,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
         )
     }
