@@ -24,22 +24,21 @@ class MainActivity : ComponentActivity() {
 
         val b3SepoliaNetwork = GenericNetwork(
             blockExplorerUrls = listOf(
-                "https://sepolia-explorer.b3.fun" // ako nemaš tačan explorer, stavi "" ili ukloni kasnije
+                "https://sepolia-explorer.b3.fun"
             ),
-            chainId = 1993,          // Any -> Int (može i "1993")
+            chainId = 1993,
             chainName = "B3 Sepolia",
             iconUrls = listOf(
                 "https://icodrops.com/media/projects/covers/b3-fun_cover_1740116094.webp"
             ),
-            lcdUrl = null,           // EVM uglavnom nema lcdUrl
+            lcdUrl = null,
             name = "B3 Sepolia",
-            nameService = null,      // ako nema ENS-like registry
             nativeCurrency = NativeCurrency(
                 name = "Ether",
                 symbol = "ETH",
                 decimals = 18
             ),
-            networkId = 1993,        // Any -> Int/Long (može i "1993")
+            networkId = 1993,
             privateCustomerRpcUrls = null,
             rpcUrls = listOf(
                 "https://sepolia.b3.fun"

@@ -200,6 +200,24 @@ fun AppRootView() {
                     },
                     onNavigateToSuiSendTransaction = {
                         navController.navigate(Route.SuiSendTransaction.createRoute(address))
+                    },
+                    onNavigateToTonSignMessage = {
+                        navController.navigate(Route.TonSignMessage.createRoute(address))
+                    },
+                    onNavigateToTonSendTon = {
+                        navController.navigate(Route.TonSendTon.createRoute(address))
+                    },
+                    onNavigateToTonSendJetton = {
+                        navController.navigate(Route.TonSendJetton.createRoute(address))
+                    },
+                    onNavigateToBtcSignMessage = {
+                        navController.navigate(Route.BtcSignMessage.createRoute(address))
+                    },
+                    onNavigateToBtcSendBitcoin = {
+                        navController.navigate(Route.BtcSendBitcoin.createRoute(address))
+                    },
+                    onNavigateToBtcSignPsbt = {
+                        navController.navigate(Route.BtcSignPsbt.createRoute(address))
                     }
                 )
             }
@@ -428,6 +446,66 @@ fun AppRootView() {
                     wallet = w
                 )
             }
+        }
+
+        // TON Sign Message Screen
+        composable(
+            route = Route.TonSignMessage.route,
+            arguments = listOf(navArgument("address") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val address = backStackEntry.arguments?.getString("address") ?: return@composable
+            val wallet = remember(address) { findWalletByAddress(address) }
+            wallet?.let { w -> TonSignMessageScreen(onNavigateBack = { navController.popBackStack() }, wallet = w) }
+        }
+
+        // TON Send TON Screen
+        composable(
+            route = Route.TonSendTon.route,
+            arguments = listOf(navArgument("address") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val address = backStackEntry.arguments?.getString("address") ?: return@composable
+            val wallet = remember(address) { findWalletByAddress(address) }
+            wallet?.let { w -> TonSendTonScreen(onNavigateBack = { navController.popBackStack() }, wallet = w) }
+        }
+
+        // TON Send Jetton Screen
+        composable(
+            route = Route.TonSendJetton.route,
+            arguments = listOf(navArgument("address") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val address = backStackEntry.arguments?.getString("address") ?: return@composable
+            val wallet = remember(address) { findWalletByAddress(address) }
+            wallet?.let { w -> TonSendJettonScreen(onNavigateBack = { navController.popBackStack() }, wallet = w) }
+        }
+
+        // Bitcoin Sign Message Screen
+        composable(
+            route = Route.BtcSignMessage.route,
+            arguments = listOf(navArgument("address") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val address = backStackEntry.arguments?.getString("address") ?: return@composable
+            val wallet = remember(address) { findWalletByAddress(address) }
+            wallet?.let { w -> BitcoinSignMessageScreen(onNavigateBack = { navController.popBackStack() }, wallet = w) }
+        }
+
+        // Bitcoin Send Screen
+        composable(
+            route = Route.BtcSendBitcoin.route,
+            arguments = listOf(navArgument("address") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val address = backStackEntry.arguments?.getString("address") ?: return@composable
+            val wallet = remember(address) { findWalletByAddress(address) }
+            wallet?.let { w -> BitcoinSendScreen(onNavigateBack = { navController.popBackStack() }, wallet = w) }
+        }
+
+        // Bitcoin Sign PSBT Screen
+        composable(
+            route = Route.BtcSignPsbt.route,
+            arguments = listOf(navArgument("address") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val address = backStackEntry.arguments?.getString("address") ?: return@composable
+            val wallet = remember(address) { findWalletByAddress(address) }
+            wallet?.let { w -> BitcoinSignPsbtScreen(onNavigateBack = { navController.popBackStack() }, wallet = w) }
         }
     }
 }
