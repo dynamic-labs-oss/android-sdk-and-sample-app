@@ -27,6 +27,7 @@ fun HomeScreen(
     onNavigateToPasskeys: () -> Unit,
     onNavigateToProjectSettings: () -> Unit,
     onNavigateToCreatePasswordWallet: () -> Unit = {},
+    onNavigateToImportPrivateKey: () -> Unit = {},
     onNavigateToDelegation: () -> Unit = {},
     onNavigateToWalletConnect: () -> Unit = {}
 ) {
@@ -34,6 +35,7 @@ fun HomeScreen(
     val wallets by viewModel.wallets.collectAsState()
     val user by viewModel.user.collectAsState()
     val token by viewModel.token.collectAsState()
+    val minAuthToken by viewModel.minAuthToken.collectAsState()
     val isCreatingWallets by viewModel.isCreatingWallets.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
     LaunchedEffect(Unit) {
@@ -151,6 +153,15 @@ fun HomeScreen(
             modifier = Modifier.padding(horizontal = 20.dp)
         )
 
+        // Import Private Key button
+        Spacer(modifier = Modifier.height(12.dp))
+        NavigationButton(
+            icon = Icons.Default.Download,
+            title = "Import Private Key",
+            onClick = onNavigateToImportPrivateKey,
+            modifier = Modifier.padding(horizontal = 20.dp)
+        )
+
         Spacer(modifier = Modifier.height(24.dp))
 
         // 2) Open Profile Button
@@ -260,6 +271,17 @@ fun HomeScreen(
                 value = authToken,
                 displayValue = truncateMiddle(authToken),
                 copyValue = authToken
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+
+        // 7) Minified Auth Token
+        minAuthToken?.let { minToken ->
+            ValueCard(
+                title = "Min Auth Token",
+                value = minToken,
+                displayValue = truncateMiddle(minToken),
+                copyValue = minToken
             )
             Spacer(modifier = Modifier.height(12.dp))
         }

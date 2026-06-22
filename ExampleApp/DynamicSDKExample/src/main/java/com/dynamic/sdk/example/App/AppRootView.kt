@@ -59,6 +59,9 @@ fun AppRootView() {
                 onNavigateToCreatePasswordWallet = {
                     navController.navigate(Route.CreatePasswordWallet.route)
                 },
+                onNavigateToImportPrivateKey = {
+                    navController.navigate(Route.ImportPrivateKey.route)
+                },
                 onNavigateToDelegation = {
                     navController.navigate(Route.Delegation.route)
                 },
@@ -115,6 +118,13 @@ fun AppRootView() {
         // Create Password Wallet Screen
         composable(Route.CreatePasswordWallet.route) {
             CreatePasswordWalletScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        // Import Private Key Screen
+        composable(Route.ImportPrivateKey.route) {
+            ImportPrivateKeyScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }

@@ -13,6 +13,7 @@ sealed class Route(val route: String) {
     object TrustedDevices : Route("trusted_devices")
     object ProjectSettings : Route("project_settings")
     object CreatePasswordWallet : Route("create_password_wallet")
+    object ImportPrivateKey : Route("import_private_key")
     // Wallet routes with address parameter
     object WalletDetails : Route("wallet_details/{address}") {
         fun createRoute(address: String) = "wallet_details/$address"
