@@ -27,6 +27,7 @@ fun HomeScreen(
     onNavigateToPasskeys: () -> Unit,
     onNavigateToProjectSettings: () -> Unit,
     onNavigateToCreatePasswordWallet: () -> Unit = {},
+    onNavigateToImportPrivateKey: () -> Unit = {},
     onNavigateToDelegation: () -> Unit = {},
     onNavigateToWalletConnect: () -> Unit = {}
 ) {
@@ -149,6 +150,15 @@ fun HomeScreen(
             icon = Icons.Default.Lock,
             title = "Create Password Wallet",
             onClick = onNavigateToCreatePasswordWallet,
+            modifier = Modifier.padding(horizontal = 20.dp)
+        )
+
+        // Import Private Key button
+        Spacer(modifier = Modifier.height(12.dp))
+        NavigationButton(
+            icon = Icons.Default.Download,
+            title = "Import Private Key",
+            onClick = onNavigateToImportPrivateKey,
             modifier = Modifier.padding(horizontal = 20.dp)
         )
 
