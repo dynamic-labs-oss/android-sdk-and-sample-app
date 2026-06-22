@@ -26,6 +26,9 @@ class HomeScreenViewModel : ViewModel() {
     private val _token = MutableStateFlow<String?>(null)
     val token: StateFlow<String?> = _token.asStateFlow()
 
+    private val _minAuthToken = MutableStateFlow<String?>(null)
+    val minAuthToken: StateFlow<String?> = _minAuthToken.asStateFlow()
+
     private val _isCreatingWallets = MutableStateFlow(false)
     val isCreatingWallets: StateFlow<Boolean> = _isCreatingWallets.asStateFlow()
 
@@ -53,6 +56,13 @@ class HomeScreenViewModel : ViewModel() {
         viewModelScope.launch {
             sdk.auth.tokenChanges.collect { authToken ->
                 _token.value = authToken
+            }
+        }
+
+        // Listen for minified auth token changes
+        viewModelScope.launch {
+            sdk.auth.minAuthTokenChanges.collect { minToken ->
+                _minAuthToken.value = minToken
             }
         }
 

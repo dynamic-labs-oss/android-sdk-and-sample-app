@@ -192,8 +192,8 @@ class TonSendJettonViewModel(private val wallet: BaseWallet) : ViewModel() {
             try {
                 val result = sdk.ton.sendJetton(
                     walletId = walletId,
-                    recipientAddress = _recipientAddress.value.trim(),
-                    jettonAmount = _amount.value.trim(),
+                    to = _recipientAddress.value.trim(),
+                    amount = _amount.value.trim(),
                     jettonMasterAddress = _jettonMasterAddress.value.trim()
                 )
                 _boc.value = result.boc
