@@ -25,6 +25,7 @@ fun HomeScreen(
     onNavigateToStepUpAuth: () -> Unit,
     onNavigateToTrustedDevices: () -> Unit,
     onNavigateToPasskeys: () -> Unit,
+    onNavigateToBusinessAccounts: () -> Unit,
     onNavigateToProjectSettings: () -> Unit,
     onNavigateToCreatePasswordWallet: () -> Unit = {},
     onNavigateToImportPrivateKey: () -> Unit = {},
@@ -218,6 +219,15 @@ fun HomeScreen(
             icon = Icons.Default.Key,
             title = "Passkeys",
             onClick = onNavigateToPasskeys,
+            modifier = Modifier.padding(horizontal = 20.dp)
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        NavigationButton(
+            icon = Icons.Default.Business,
+            title = "Business Accounts",
+            onClick = onNavigateToBusinessAccounts,
             modifier = Modifier.padding(horizontal = 20.dp)
         )
 
