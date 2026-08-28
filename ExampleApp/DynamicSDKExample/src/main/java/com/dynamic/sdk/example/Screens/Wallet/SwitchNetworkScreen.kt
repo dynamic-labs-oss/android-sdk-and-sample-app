@@ -52,6 +52,7 @@ fun SwitchNetworkScreen(
     val currentNetworkId by viewModel.currentNetworkId.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
+    val noNetworksMessage by viewModel.noNetworksMessage.collectAsState()
     val isSuccessAlertPresented by viewModel.isSuccessAlertPresented.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -127,6 +128,24 @@ fun SwitchNetworkScreen(
                     Text(
                         text = errorMessage!!,
                         color = Color.Red
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = { viewModel.load() }) {
+                        Text("Retry")
+                    }
+                }
+            }
+            noNetworksMessage != null -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = noNetworksMessage!!,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(onClick = { viewModel.load() }) {
@@ -225,6 +244,9 @@ class SwitchNetworkViewModel(private val wallet: BaseWallet) : ViewModel() {
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
 
+    private val _noNetworksMessage = MutableStateFlow<String?>(null)
+    val noNetworksMessage: StateFlow<String?> = _noNetworksMessage.asStateFlow()
+
     private val _isSuccessAlertPresented = MutableStateFlow(false)
     val isSuccessAlertPresented: StateFlow<Boolean> = _isSuccessAlertPresented.asStateFlow()
 
@@ -232,8 +254,19 @@ class SwitchNetworkViewModel(private val wallet: BaseWallet) : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             _errorMessage.value = null
+            _noNetworksMessage.value = null
 
             try {
+                val chain = wallet.chain.uppercase()
+                val configuredNetworks = sdk.networks.networksForChain(chain)
+                if (configuredNetworks.isEmpty()) {
+                    _networks.value = emptyList()
+                    _noNetworksMessage.value =
+                        "No $chain networks configured on the dashboard."
+                    _isLoading.value = false
+                    return@launch
+                }
+
                 // Get current network
                 try {
                     val currentNetwork = sdk.wallets.getNetwork(wallet)
@@ -248,28 +281,24 @@ class SwitchNetworkViewModel(private val wallet: BaseWallet) : ViewModel() {
                 }
 
                 // Get available networks from SDK (environment-configured networks)
-                val networkList = mutableListOf<NetworkItem>()
-
-                if (wallet.chain.uppercase() == "EVM") {
-                    // Use networks from SDK instead of hardcoded list
-                    networkList.addAll(sdk.networks.evm.map { network ->
+                val networkList = if (chain == "EVM") {
+                    configuredNetworks.map { network ->
                         val chainId = when (val v = network.chainId) {
                             is Int -> v
                             is String -> v.toIntOrNull()
                             else -> null
                         }
                         NetworkItem(network.name, chainId, null)
-                    })
-                } else if (wallet.chain.uppercase() == "SOL") {
-                    // Use networks from SDK instead of hardcoded list
-                    networkList.addAll(sdk.networks.solana.map { network ->
+                    }
+                } else {
+                    configuredNetworks.map { network ->
                         val networkId = when (val v = network.networkId) {
                             is String -> v
                             is Int, is Long -> v.toString()
                             else -> v.toString()
                         }
                         NetworkItem(network.name, null, networkId)
-                    })
+                    }
                 }
 
                 _networks.value = networkList
@@ -304,9 +333,24 @@ class SwitchNetworkViewModel(private val wallet: BaseWallet) : ViewModel() {
             _errorMessage.value = null
 
             try {
-                val networkValue = when {
-                    network.chainId != null -> Network.evm(network.chainId)
-                    network.networkId != null -> Network.solana(network.networkId)
+                val networkValue: Network
+                when (wallet.chain.uppercase()) {
+                    "EVM" -> {
+                        val chainId = network.chainId ?: throw Exception("Invalid network")
+                        networkValue = Network.evm(chainId)
+                    }
+                    "SOL" -> {
+                        val networkId = network.networkId ?: throw Exception("Invalid network")
+                        networkValue = Network.solana(networkId)
+                    }
+                    "SUI" -> {
+                        val networkId = network.networkId ?: throw Exception("Invalid network")
+                        networkValue = Network.sui(networkId)
+                    }
+                    "BTC" -> {
+                        val networkId = network.networkId ?: throw Exception("Invalid network")
+                        networkValue = Network.bitcoin(networkId)
+                    }
                     else -> throw Exception("Invalid network")
                 }
 

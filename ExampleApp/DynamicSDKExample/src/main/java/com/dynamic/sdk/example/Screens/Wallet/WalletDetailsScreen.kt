@@ -30,6 +30,7 @@ import com.dynamic.sdk.android.Models.DelegationStatus
 import com.dynamic.sdk.android.Models.DelegationWalletIdentifier
 import com.dynamic.sdk.android.Models.WalletDelegatedStatus
 import com.dynamic.sdk.android.Models.ChainEnum
+import com.dynamic.sdk.android.Module.GenericNetwork
 import com.dynamic.sdk.example.Components.ActionButton
 import com.dynamic.sdk.example.Components.ErrorMessageView
 import com.dynamic.sdk.example.Components.SecondaryButton
@@ -947,15 +948,55 @@ class WalletDetailsViewModel(private val wallet: BaseWallet) : ViewModel() {
             try {
                 val networkResult = sdk.wallets.getNetwork(wallet)
                 val jsonValue = networkResult.value
-                _network.value = if (jsonValue is JsonPrimitive) {
+                val rawId = if (jsonValue is JsonPrimitive) {
                     jsonValue.intOrNull?.toString() ?: jsonValue.contentOrNull ?: jsonValue.toString()
                 } else {
                     jsonValue.toString()
                 }
+                val chain = wallet.chain.uppercase()
+                _network.value = resolveNetworkDisplay(
+                    rawId = rawId,
+                    chain = chain,
+                    networks = sdk.networks.networksForChain(chain)
+                )
             } catch (e: Exception) {
                 _network.value = null
             }
             _isLoadingNetwork.value = false
+        }
+    }
+
+    private fun resolveNetworkDisplay(
+        rawId: String,
+        chain: String,
+        networks: List<GenericNetwork>
+    ): String {
+        if (networks.isEmpty()) {
+            return rawId
+        }
+
+        val isEvm = chain == "EVM"
+        val matchingNetwork = networks.firstOrNull { network ->
+            if (isEvm) {
+                normalizeNetworkId(network.chainId) == rawId
+            } else {
+                normalizeNetworkId(network.networkId) == rawId ||
+                    normalizeNetworkId(network.chainId) == rawId
+            }
+        }
+
+        return if (matchingNetwork != null) {
+            "${matchingNetwork.name} ($rawId)"
+        } else {
+            "unresolved ($rawId)"
+        }
+    }
+
+    private fun normalizeNetworkId(value: Any): String {
+        return when (value) {
+            is Double -> value.toInt().toString()
+            is Float -> value.toInt().toString()
+            else -> value.toString()
         }
     }
 

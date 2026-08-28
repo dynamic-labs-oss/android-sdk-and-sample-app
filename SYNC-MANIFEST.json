@@ -1,0 +1,12 @@
+{
+  "sourceRepo": "android-sdk-with-webview",
+  "sourceCommit": "67a7262a0b3249854fb6753c16cd6e2ee8cbc12f",
+  "sourceBranch": "fix/business-accounts-screen-weight-import",
+  "sourceDirty": false,
+  "generatedAtUtc": "2026-08-26T20:30:40Z",
+  "aarSha256": {
+    "dynamic-sdk-android.aar": "c24b1bc2fc68a30b09879b60710aee40aad428b50ba0d13c81115c1f005f2b56",
+    "solana-web3.aar": "bffde6f8f27e0e2c40add7686a17640c6ac4b954ce7517b20a71b0e4571d4281"
+  },
+  "smokeBuildPassed": true
+}
