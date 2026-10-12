@@ -67,7 +67,11 @@ fun WalletDetailsScreen(
     onNavigateToTonSendJetton: () -> Unit = {},
     onNavigateToBtcSignMessage: () -> Unit = {},
     onNavigateToBtcSendBitcoin: () -> Unit = {},
-    onNavigateToBtcSignPsbt: () -> Unit = {}
+    onNavigateToBtcSignPsbt: () -> Unit = {},
+    onNavigateToStellarSignMessage: () -> Unit = {},
+    onNavigateToStellarSignTransaction: () -> Unit = {},
+    onNavigateToStellarSendBalance: () -> Unit = {},
+    onNavigateToStellarAddTrustline: () -> Unit = {}
 ) {
     val viewModel: WalletDetailsViewModel = viewModel(
         factory = WalletDetailsViewModelFactory(wallet)
@@ -318,6 +322,15 @@ fun WalletDetailsScreen(
                 onSignMessage = onNavigateToBtcSignMessage,
                 onSendBitcoin = onNavigateToBtcSendBitcoin,
                 onSignPsbt = onNavigateToBtcSignPsbt
+            )
+        }
+
+        if (wallet.chain.uppercase() == "STELLAR") {
+            StellarActionsView(
+                onSignMessage = onNavigateToStellarSignMessage,
+                onSignTransaction = onNavigateToStellarSignTransaction,
+                onSendBalance = onNavigateToStellarSendBalance,
+                onAddTrustline = onNavigateToStellarAddTrustline
             )
         }
 
@@ -732,6 +745,54 @@ fun BitcoinActionsView(
 }
 
 @Composable
+fun StellarActionsView(
+    onSignMessage: () -> Unit,
+    onSignTransaction: () -> Unit,
+    onSendBalance: () -> Unit,
+    onAddTrustline: () -> Unit
+) {
+    Column(
+        modifier = Modifier.padding(vertical = 8.dp)
+    ) {
+        Text(
+            text = "Stellar Actions",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+        )
+
+        ActionButton(
+            icon = Icons.Default.Edit,
+            title = "Sign Message",
+            onClick = onSignMessage,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+        )
+
+        ActionButton(
+            icon = Icons.Default.Create,
+            title = "Sign Transaction",
+            onClick = onSignTransaction,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+        )
+
+        ActionButton(
+            icon = Icons.Default.Send,
+            title = "Send Balance",
+            onClick = onSendBalance,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+        )
+
+        ActionButton(
+            icon = Icons.Default.SwapHoriz,
+            title = "Add Trustline",
+            onClick = onAddTrustline,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+        )
+    }
+}
+
+@Composable
 fun DelegationSection(
     status: WalletDelegatedStatus,
     isLoading: Boolean,
@@ -953,11 +1014,10 @@ class WalletDetailsViewModel(private val wallet: BaseWallet) : ViewModel() {
                 } else {
                     jsonValue.toString()
                 }
-                val chain = wallet.chain.uppercase()
                 _network.value = resolveNetworkDisplay(
                     rawId = rawId,
-                    chain = chain,
-                    networks = sdk.networks.networksForChain(chain)
+                    chain = wallet.chain,
+                    networks = sdk.networks.networksForChain(wallet.chain)
                 )
             } catch (e: Exception) {
                 _network.value = null
@@ -975,7 +1035,7 @@ class WalletDetailsViewModel(private val wallet: BaseWallet) : ViewModel() {
             return rawId
         }
 
-        val isEvm = chain == "EVM"
+        val isEvm = chain.uppercase() == "EVM"
         val matchingNetwork = networks.firstOrNull { network ->
             if (isEvm) {
                 normalizeNetworkId(network.chainId) == rawId

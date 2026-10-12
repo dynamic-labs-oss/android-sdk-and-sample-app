@@ -91,5 +91,19 @@ sealed class Route(val route: String) {
         fun createRoute(address: String) = "btc_sign_psbt/$address"
     }
 
+    // Stellar routes
+    object StellarSignMessage : Route("stellar_sign_message/{address}") {
+        fun createRoute(address: String) = "stellar_sign_message/$address"
+    }
+    object StellarSignTransaction : Route("stellar_sign_transaction/{address}") {
+        fun createRoute(address: String) = "stellar_sign_transaction/$address"
+    }
+    object StellarSendBalance : Route("stellar_send_balance/{address}") {
+        fun createRoute(address: String) = "stellar_send_balance/$address"
+    }
+    object StellarAddTrustline : Route("stellar_add_trustline/{address}") {
+        fun createRoute(address: String) = "stellar_add_trustline/$address"
+    }
+
     object WalletConnect : Route("wallet_connect")
 }

@@ -237,6 +237,18 @@ fun AppRootView() {
                     },
                     onNavigateToBtcSignPsbt = {
                         navController.navigate(Route.BtcSignPsbt.createRoute(address))
+                    },
+                    onNavigateToStellarSignMessage = {
+                        navController.navigate(Route.StellarSignMessage.createRoute(address))
+                    },
+                    onNavigateToStellarSignTransaction = {
+                        navController.navigate(Route.StellarSignTransaction.createRoute(address))
+                    },
+                    onNavigateToStellarSendBalance = {
+                        navController.navigate(Route.StellarSendBalance.createRoute(address))
+                    },
+                    onNavigateToStellarAddTrustline = {
+                        navController.navigate(Route.StellarAddTrustline.createRoute(address))
                     }
                 )
             }
@@ -525,6 +537,46 @@ fun AppRootView() {
             val address = backStackEntry.arguments?.getString("address") ?: return@composable
             val wallet = remember(address) { findWalletByAddress(address) }
             wallet?.let { w -> BitcoinSignPsbtScreen(onNavigateBack = { navController.popBackStack() }, wallet = w) }
+        }
+
+        // Stellar Sign Message Screen
+        composable(
+            route = Route.StellarSignMessage.route,
+            arguments = listOf(navArgument("address") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val address = backStackEntry.arguments?.getString("address") ?: return@composable
+            val wallet = remember(address) { findWalletByAddress(address) }
+            wallet?.let { w -> StellarSignMessageScreen(onNavigateBack = { navController.popBackStack() }, wallet = w) }
+        }
+
+        // Stellar Sign Transaction Screen
+        composable(
+            route = Route.StellarSignTransaction.route,
+            arguments = listOf(navArgument("address") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val address = backStackEntry.arguments?.getString("address") ?: return@composable
+            val wallet = remember(address) { findWalletByAddress(address) }
+            wallet?.let { w -> StellarSignTransactionScreen(onNavigateBack = { navController.popBackStack() }, wallet = w) }
+        }
+
+        // Stellar Send Balance Screen
+        composable(
+            route = Route.StellarSendBalance.route,
+            arguments = listOf(navArgument("address") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val address = backStackEntry.arguments?.getString("address") ?: return@composable
+            val wallet = remember(address) { findWalletByAddress(address) }
+            wallet?.let { w -> StellarSendBalanceScreen(onNavigateBack = { navController.popBackStack() }, wallet = w) }
+        }
+
+        // Stellar Add Trustline Screen
+        composable(
+            route = Route.StellarAddTrustline.route,
+            arguments = listOf(navArgument("address") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val address = backStackEntry.arguments?.getString("address") ?: return@composable
+            val wallet = remember(address) { findWalletByAddress(address) }
+            wallet?.let { w -> StellarAddTrustlineScreen(onNavigateBack = { navController.popBackStack() }, wallet = w) }
         }
     }
 }
