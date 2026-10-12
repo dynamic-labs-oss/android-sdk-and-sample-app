@@ -152,7 +152,8 @@ private class FakeBusinessAccountsClient : BusinessAccountsClient {
         businessAccountId: String?,
         walletId: String?,
         signerType: BusinessAccountSignerType?,
-        password: String?
+        password: String?,
+        targetSignerPassword: String?
     ): AddBusinessAccountSignerResponse {
         error("Not used")
     }
