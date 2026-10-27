@@ -30,7 +30,8 @@ fun HomeScreen(
     onNavigateToCreatePasswordWallet: () -> Unit = {},
     onNavigateToImportPrivateKey: () -> Unit = {},
     onNavigateToDelegation: () -> Unit = {},
-    onNavigateToWalletConnect: () -> Unit = {}
+    onNavigateToWalletConnect: () -> Unit = {},
+    onNavigateToEarn: () -> Unit = {}
 ) {
     val viewModel: HomeScreenViewModel = viewModel()
     val wallets by viewModel.wallets.collectAsState()
@@ -258,6 +259,15 @@ fun HomeScreen(
             icon = Icons.Default.Link,
             title = "WalletConnect",
             onClick = onNavigateToWalletConnect,
+            modifier = Modifier.padding(horizontal = 20.dp)
+        )
+
+        // 8) Earn Vaults Button
+        Spacer(modifier = Modifier.height(12.dp))
+        NavigationButton(
+            icon = Icons.Default.Star,
+            title = "Earn Vaults",
+            onClick = onNavigateToEarn,
             modifier = Modifier.padding(horizontal = 20.dp)
         )
 
