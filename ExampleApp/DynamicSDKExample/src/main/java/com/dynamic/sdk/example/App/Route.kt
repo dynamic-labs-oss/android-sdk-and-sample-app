@@ -106,4 +106,6 @@ sealed class Route(val route: String) {
     }
 
     object WalletConnect : Route("wallet_connect")
+
+    object Earn : Route("earn")
 }

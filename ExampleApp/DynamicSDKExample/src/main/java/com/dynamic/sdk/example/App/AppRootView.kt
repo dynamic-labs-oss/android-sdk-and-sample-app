@@ -70,6 +70,9 @@ fun AppRootView() {
                 },
                 onNavigateToWalletConnect = {
                     navController.navigate(Route.WalletConnect.route)
+                },
+                onNavigateToEarn = {
+                    navController.navigate(Route.Earn.route)
                 }
             )
         }
@@ -577,6 +580,11 @@ fun AppRootView() {
             val address = backStackEntry.arguments?.getString("address") ?: return@composable
             val wallet = remember(address) { findWalletByAddress(address) }
             wallet?.let { w -> StellarAddTrustlineScreen(onNavigateBack = { navController.popBackStack() }, wallet = w) }
+        }
+
+        // Earn Vaults Screen
+        composable(Route.Earn.route) {
+            EarnScreen(onNavigateBack = { navController.popBackStack() })
         }
     }
 }
