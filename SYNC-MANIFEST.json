@@ -1,12 +1,12 @@
 {
   "sourceRepo": "android-sdk-with-webview",
-  "sourceCommit": "72c88a0592a50fa956944993f83324a81dd28465",
+  "sourceCommit": "ff54d83c4bf31a462ff11f90f1f88c70b0ad75ad",
   "sourceBranch": "main",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "sourceDirty": false,
-  "generatedAtUtc": "2026-11-02T11:22:43Z",
+  "generatedAtUtc": "2026-11-02T18:24:12Z",
   "aarSha256": {
-    "dynamic-sdk-android.aar": "89c534ba374abcbaf58444d222dded676c26b422ef26234720a3ed1e429beebd",
+    "dynamic-sdk-android.aar": "a2341bc5dfe547c73d947d3b89e7e7e452ca799c350db95ca88c4ceb00b8f3b2",
     "solana-web3.aar": "bffde6f8f27e0e2c40add7686a17640c6ac4b954ce7517b20a71b0e4571d4281"
   },
   "smokeBuildPassed": true

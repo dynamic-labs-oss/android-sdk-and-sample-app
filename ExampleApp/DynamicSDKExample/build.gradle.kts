@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.dynamic.sdk.example"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.dynamic.sdk.example"
         minSdk = 28
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -90,8 +90,8 @@ dependencies {
     implementation("androidx.browser:browser:1.7.0")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("com.google.crypto.tink:tink-android:1.15.0")
-    implementation("androidx.credentials:credentials:1.2.2")
-    implementation("androidx.credentials:credentials-play-services-auth:1.2.2")
+    implementation("androidx.credentials:credentials:1.5.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.5.0")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation(platform("androidx.compose:compose-bom:2024.09.00"))
     implementation("androidx.compose.ui:ui")
