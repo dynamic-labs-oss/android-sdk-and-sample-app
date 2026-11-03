@@ -1,0 +1,60 @@
+name: GitHub Release
+
+# release-to-oss.yml in dynamic-labs/android-sdk-with-webview opens
+# release/vX.Y.Z PRs against this repo. When one merges to main, tag the
+# merge commit and publish the GitHub Release, using the merged version's
+# CHANGELOG.md section as the notes and attaching the AARs.
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: write # creates the tag and the release
+
+jobs:
+  release:
+    if: >-
+      github.event.pull_request.merged == true
+      && startsWith(github.event.pull_request.head.ref, 'release/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+
+      - name: Create release from CHANGELOG.md
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="${HEAD_REF#release/v}"
+          if [ -z "$version" ] || [ "$version" = "$HEAD_REF" ]; then
+            echo "Head ref '$HEAD_REF' is not a release/vX.Y.Z branch." >&2
+            exit 1
+          fi
+
+          # Everything between this version's heading and the next one.
+          awk -v v="$version" '
+            index($0, "## [" v "]") == 1 { found=1; next }
+            found && /^## \[/ { exit }
+            found { print }
+          ' CHANGELOG.md | sed -e '/./,$!d' | tac | sed -e '/./,$!d' | tac \
+            > release-notes.md
+
+          if ! grep -q '[^[:space:]]' release-notes.md; then
+            echo "CHANGELOG.md has no '## [$version]' section." >&2
+            echo "Add it to the release PR before merging." >&2
+            exit 1
+          fi
+
+          cat release-notes.md
+          gh release create "$version" \
+            --title "v${version}" \
+            --notes-file release-notes.md \
+            --target "$MERGE_SHA" \
+            dynamic-sdk-android.aar solana-web3.aar
